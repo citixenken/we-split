@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var tapCount = 0
+    
     var body: some View {
         NavigationView {
             Form {
@@ -24,6 +27,10 @@ struct ContentView: View {
                     Text("We Splot").padding()
                     Text("We Splot").padding()
                     
+                }
+                
+                Button ("Tap Count: \(tapCount)") {
+                    self.tapCount += 1
                 }
             }
             .navigationTitle("We Split")
