@@ -9,21 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Form {
-            Section {
-                Text("We Split").padding()
-                Text("We Split").padding()
-                Text("We Split").padding()
-                Text("We Split").padding()
-                Text("We Split").padding()
-               
+        NavigationView {
+            Form {
+                Section {
+                    Text("We Split").padding()
+                    Text("We Split").padding()
+                    Text("We Split").padding()
+                    Text("We Split").padding()
+                    Text("We Split").padding()
+                   
+                }
+                Section {
+                    Text("We Splot").padding()
+                    Text("We Splot").padding()
+                    Text("We Splot").padding()
+                    
+                }
             }
-            Section {
-                Text("We Splot").padding()
-                Text("We Splot").padding()
-                Text("We Splot").padding()
-                
-            }
+            .navigationTitle("We Split")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
