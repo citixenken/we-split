@@ -66,18 +66,30 @@ struct ContentView: View {
     //        }
     //    }
     
-    @State private var totalAmount = 0.0
+    @State private var checkAmount = 0.0
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 7
     
     let tipPercentages = [1, 5, 10, 15, 20, 0]
+    
+    var totalPerPerson: Double {
+        let peopleCount = Double(numberOfPeople + 2)
+        let tipSelection = Double(tipPercentage)
+        
+        let tipValue = checkAmount / 100 * tipSelection
+        let grandTotal = checkAmount + tipValue
+        let amountPerPerson = grandTotal / peopleCount
+        
+        return amountPerPerson
+        
+    }
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
                     //TextField("Enter total cost", value: $totalAmount, format: .currency(code: "KSH"))
-                    TextField("Total cost", value: $totalAmount, format:
+                    TextField("Total cost", value: $checkAmount, format:
                                     .currency(code: Locale.current.currencyCode ?? "USD"))
                         .keyboardType(.decimalPad)
                     Picker("Number of people", selection: $numberOfPeople) {
@@ -86,7 +98,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                Section{
+                Section {
                     Picker("Tip percentage", selection: $tipPercentage) {
                         ForEach (tipPercentages, id: \.self) {
                             Text($0, format: .percent)
@@ -96,14 +108,16 @@ struct ContentView: View {
                 } header: {
                     Text("How much tip do you want to leave?")
                 }
+                
+                Section {
+                    Text(totalPerPerson, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+                } header: {
+                    Text("Amount Per Person")
+                }
+                
             }
-            Section {
-                Text(totalAmount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
-            }
-            
             .navigationTitle("WeSplit")
         }
-        
     }
 }
 
