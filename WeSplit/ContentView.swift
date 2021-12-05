@@ -73,17 +73,31 @@ struct ContentView: View {
     let tipPercentages = [1, 5, 10, 15, 20, 0]
     
     var body: some View {
-        Form {
-            Section {
-                //TextField("Enter total cost", value: $totalAmount, format: .currency(code: "KSH"))
-                TextField("Enter total cost", value: $totalAmount, format:
-                                .currency(code: Locale.current.currencyCode ?? "USD"))
-                                .keyboardType(.decimalPad)
+        NavigationView {
+            Form {
+                Section {
+                    //TextField("Enter total cost", value: $totalAmount, format: .currency(code: "KSH"))
+                    TextField("Total cost", value: $totalAmount, format:
+                                    .currency(code: Locale.current.currencyCode ?? "USD"))
+                                    .keyboardType(.decimalPad)
+                    Picker("Number of people", selection: $numberOfPeople) {
+                        ForEach(2..<100) {
+                            Text("\($0) people")
+                        }
+                    }
+    //                Picker("Tip percentage", selection: $tipPercentage) {
+    //                    ForEach (tipPercentages, id: \.self) {
+    //                        Text($0)
+    //                    }
+    //                }
+                }
+                Section {
+                    Text(totalAmount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+                }
             }
-            Section {
-                Text(totalAmount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
-            }
+            .navigationTitle("WeSplit")
         }
+        
     }
 }
 
