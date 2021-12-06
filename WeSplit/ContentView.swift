@@ -68,11 +68,19 @@ struct ContentView: View {
     
     @State private var checkAmount = 0.0
     @State private var numberOfPeople = 2
-    @State private var tipPercentage = 7
+    @State private var tipPercentage = 5
     
-    let tipPercentages = [1, 5, 10, 15, 20, 0]
+    //let tipPercentages = [1, 5, 10, 15, 20, 0]
+    let tipPercentages = 100
     
     @FocusState private var amountIsFocused: Bool
+    
+    var grossAmount: Double {
+        return totalPerPerson * Double(numberOfPeople + 2)
+    }
+    var currencyFormatter: FloatingPointFormatStyle<Double>.Currency {
+        return .currency(code: Locale.current.currencyCode ?? "USD")
+    }
     
     var totalPerPerson: Double {
         let peopleCount = Double(numberOfPeople + 2)
@@ -83,7 +91,6 @@ struct ContentView: View {
         let amountPerPerson = grandTotal / peopleCount
         
         return amountPerPerson
-        
     }
     
     var body: some View {
@@ -91,8 +98,7 @@ struct ContentView: View {
             Form {
                 Section {
                     //TextField("Enter total cost", value: $totalAmount, format: .currency(code: "KSH"))
-                    TextField("Total cost", value: $checkAmount, format:
-                                    .currency(code: Locale.current.currencyCode ?? "USD"))
+                    TextField("Total cost", value: $checkAmount, format: currencyFormatter)
                         .keyboardType(.decimalPad)
                         .focused($amountIsFocused)
                     Picker("Number of people", selection: $numberOfPeople) {
@@ -103,17 +109,23 @@ struct ContentView: View {
                 }
                 Section {
                     Picker("Tip percentage", selection: $tipPercentage) {
-                        ForEach (tipPercentages, id: \.self) {
+                        ForEach (0...tipPercentages, id: \.self) {
                             Text($0, format: .percent)
                         }
                     }
-                    .pickerStyle(.segmented)
+                    .pickerStyle(.automatic)
                 } header: {
                     Text("How much tip do you want to leave?")
                 }
                 
                 Section {
-                    Text(totalPerPerson, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+                    Text(grossAmount, format: currencyFormatter)
+                } header: {
+                    Text("Grand Total")
+                }
+                
+                Section {
+                    Text(totalPerPerson, format: currencyFormatter)
                 } header: {
                     Text("Amount Per Person")
                 }
